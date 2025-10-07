@@ -15,12 +15,13 @@ struct ListCell: View {
         VStack(alignment: .center) {
             HStack {
                 Text(listCell.character)
-                    .font(.title2)
+                    .font(.title)
                     .bold()
-                    .padding()
+                    .padding(40)
             }
             .padding()
             .background(Color(hex: listCell.color))
+            .glassEffect(.regular.tint(.mint.opacity(0.4)))
             .clipShape(RoundedRectangle(cornerRadius: 20))
             
             Text(listCell.title)
