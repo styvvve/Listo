@@ -14,7 +14,7 @@ struct NavigationView: View {
     var body: some View {
         TabView {
             Tab("Listes", systemImage: "list.bullet") {
-                    ListsView(listes: <#T##[List]#>)
+                    ListsView(listes: listes)
                 }
         }
     }
