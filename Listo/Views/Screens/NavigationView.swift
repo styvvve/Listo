@@ -11,11 +11,17 @@ struct NavigationView: View {
     
     var listes: [List]
     
+    let user: User
+    
     var body: some View {
         TabView {
             Tab("Listes", systemImage: "list.bullet") {
                     ListsView(listes: listes)
-                }
+            }
+            
+            Tab("Paramètres", systemImage: "gear") {
+                SettingsView(user: user)
+            }
         }
     }
 }
@@ -64,5 +70,5 @@ struct NavigationView: View {
         )
     ]
     
-    NavigationView(listes: sampleLists)
+    NavigationView(listes: sampleLists, user: User(name: "Test", email: "test@gmail.com"))
 }

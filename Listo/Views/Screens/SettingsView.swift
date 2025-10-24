@@ -26,22 +26,26 @@ struct SettingsView: View {
                 }
                 .padding()
                 
+                Rectangle()
+                    .foregroundStyle(.clear)
+                    .frame(height: 70)
+                
                 VStack {
                     NavigationLink {
-                        
+                        usernameView(user: user)
                     } label : {
                         CellView(texte: "Nom d'utilisateur/pseudo", colorCell: colorScheme == .dark ? Color.white : Color.black)
                     }
                     .buttonStyle(.plain)
                     
                     NavigationLink {
-                        
+                        EmailView(user: user)
                     } label : {
                         CellView(texte: "Email", colorCell: colorScheme == .dark ? Color.white : Color.black)
                     }
                     .buttonStyle(.plain)
                     NavigationLink {
-                        
+                        NotificationsView()
                     } label : {
                         CellView(texte: "Notifications", colorCell: colorScheme == .dark ? Color.white : Color.black)
                     }
