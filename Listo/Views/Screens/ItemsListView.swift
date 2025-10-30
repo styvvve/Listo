@@ -10,13 +10,14 @@ import SwiftUI
 struct ItemsListView: View {
     
     @State var theList: List
-    @State var nouvelItem: String = ""
+    @State var nouvelItemName: String = ""
+    @State var nouvelItemQuantite: Int = 0
     
     //pour le clavier
     @FocusState private var isFocused: Bool
     
     @State private var searchText: String = ""
-    @State private var isEditing: Bool = false
+    @State private var isEditing: Bool = true
     
     //demander la quantite de l'element apres l'entree
     @State private var quantite: String = ""
@@ -40,22 +41,59 @@ struct ItemsListView: View {
                         Toggle(isOn: $item.isBought) {
                             HStack {
                                 Text("\(item.name) x \(item.quantity)")
+                                if isEditing {
+                                    Spacer()
+                                    //pouvoir supprimer l'item
+                                    Button {
+                                        //supprimer
+                                        withAnimation {
+                                            theList.items.removeAll { $0.id == item.id }
+                                        }
+                                    } label: {
+                                        //bouton effacer en rouge
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundStyle(.red)
+                                        
+                                    }
+                                    .buttonStyle(.plain)
+                                }
                             }
                         }
                         .toggleStyle(checkboxToggleStyle())
                     }
                 }
-                TextField("Entrer un nouvel item", text: $nouvelItem)
-                    .focused($isFocused)
-                    .submitLabel(.done)
-                    .onSubmit {
-                        isFocused = false
-                        
-                        //genere un alert pour demander la quantite
+                
+                HStack {
+                    TextField("Entrer un nouvel item", text: $nouvelItemName)
+                        .focused($isFocused)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            isFocused = false
+                        }
+                    Rectangle()
+                        .frame(width: 30, height: 3)
+                        .rotationEffect(.degrees(90))
+                        .foregroundStyle(.gray)
+                    Text("X")
+                    TextField("", value: $nouvelItemQuantite, format: .number)
+                        .keyboardType(.decimalPad)
+                        .textFieldStyle(.roundedBorder)
+                    
+                    Button {
+                        //Création d'un nouvel item
+                        let newItem = Item(name: nouvelItemName, quantity: nouvelItemQuantite)
+                        theList.items.append(newItem)
+                        nouvelItemName = ""
+                        nouvelItemQuantite = 0
+                    }label: {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 30))
                     }
-                    .padding(.vertical)
+                }
+                
                 Spacer()
             }
+            .animation(.easeInOut, value: theList.items)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20)
             .padding(.vertical, 20)

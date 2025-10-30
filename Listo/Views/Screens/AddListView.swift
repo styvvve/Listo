@@ -30,7 +30,9 @@ struct AddListView: View {
         "Autre"
     ]
     
-    @State var unItem: Item = Item(name: "", quantity: 0)
+    //pour chaque item qui va etre ajouter a la liste
+    @State var nameItem: String = ""
+    @State var quantity: Int = 0
     
     @State var character: String = ""
     @State var title: String = ""
@@ -77,6 +79,65 @@ struct AddListView: View {
                     }
                     .pickerStyle(.menu)
                 }
+                
+                //section pour ajouter des items
+                VStack {
+                    Text("Ajouter des items")
+                        .font(.title)
+                        .bold()
+                    
+                    HStack {
+                        TextField("Pommes, eau...", text: $nameItem)
+                        Rectangle()
+                            .frame(width: 30, height: 3)
+                            .rotationEffect(.degrees(90))
+                            .foregroundStyle(.gray)
+                        Text("X")
+                        TextField("", value: $quantity, format: .number)
+                            .keyboardType(.decimalPad)
+                            .textFieldStyle(.roundedBorder)
+                        
+                        Button {
+                            //Création d'un nouvel item
+                            let newItem = Item(name: nameItem, quantity: quantity)
+                            items.append(newItem)
+                            nameItem = ""
+                            quantity = 0
+                        }label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 30))
+                        }
+                    }
+                    
+                    VStack {
+                        if (!(items.isEmpty)) {
+                            ForEach(items, id: \.self) { item in
+                                HStack {
+                                    Text("- **\(item.name)** X \(item.quantity)")
+                                    Spacer()
+                                    Button {
+                                        //supprimer
+                                        items.removeAll { $0.id == item.id }
+                                    } label: {
+                                        //bouton effacer en rouge
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundStyle(.red)
+                                        
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                        } else {
+                            Text("Aucun item. Remplissez les champs et cliquer sur le bouton plus pour ajouter des items")
+                                .lineLimit(2)
+                                .multilineTextAlignment(.center)
+                                .italic()
+                        }
+                        
+                    }
+                }
+                
+                
                 Spacer()
                 HStack {
                     Spacer()
