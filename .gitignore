@@ -1,0 +1,22 @@
+# Firebase configuration
+GoogleService-Info.plist
+google-services.json
+
+# Xcode
+*.xcuserstate
+*.xcuserdatad
+xcuserdata/
+DerivedData/
+.DS_Store
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# Environment variables
+.env
+.env.local
+
+# CocoaPods (if used)
+Pods/
+Podfile.lock
